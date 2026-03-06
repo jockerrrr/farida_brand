@@ -1,0 +1,49 @@
+.app-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background-color: #ede8dc;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(26, 23, 20, 0.45);
+  z-index: 99;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.page {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-cream);
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.12);
+}
+
+main {
+  flex: 1;
+}
+
+/* ── Responsive: on very small screens remove side shadow ── */
+@media (max-width: 430px) {
+  .app-wrapper {
+    background-color: var(--bg-cream);
+  }
+
+  .page {
+    box-shadow: none;
+  }
+}

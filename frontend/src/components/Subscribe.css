@@ -1,0 +1,85 @@
+.subscribe {
+  border-bottom: 1px solid var(--border-light);
+  padding: 44px 24px 48px;
+}
+
+.subscribe-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.subscribe-heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 9vw, 2.6rem);
+  color: var(--text-dark);
+  line-height: 1.1;
+}
+
+.subscribe-sub {
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 300px;
+}
+
+.subscribe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.subscribe-input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(26, 23, 20, 0.3);
+  padding: 12px 0;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.subscribe-input::placeholder {
+  color: var(--text-muted);
+}
+
+.subscribe-input:focus {
+  border-bottom-color: var(--text-dark);
+}
+
+.subscribe-btn {
+  width: 100%;
+  margin-top: 4px;
+  background-color: var(--btn-dark);
+  color: #fff;
+  border: none;
+  padding: 18px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: opacity 0.2s;
+  min-height: 52px;
+}
+
+.subscribe-btn:hover {
+  opacity: 0.85;
+}
+
+.subscribe-thanks {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-top: 8px;
+}

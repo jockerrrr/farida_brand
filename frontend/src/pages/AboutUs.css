@@ -1,0 +1,107 @@
+.about-page {
+  background-color: var(--bg-cream);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.about-back {
+  display: block;
+  padding: 16px 20px 8px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.about-back:hover { color: var(--text-dark); }
+
+.about-inner {
+  padding: 0 28px;
+}
+
+/* ── Header ─ */
+.about-header {
+  padding-top: 16px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 36px;
+}
+
+.about-eyebrow {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.about-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(2.8rem, 12vw, 4rem);
+  color: var(--text-dark);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.about-divider {
+  width: 40px;
+  height: 1px;
+  background-color: var(--text-dark);
+}
+
+/* ── Body ─ */
+.about-body {
+  margin-bottom: 48px;
+}
+
+.about-para {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 4vw, 1.2rem);
+  color: var(--text-dark);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.about-para--italic {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 3.5vw, 1.1rem);
+  padding-left: 16px;
+  border-left: 2px solid var(--text-dark);
+}
+
+/* ── Values strip ─ */
+.about-values {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: 20px 0;
+}
+
+.about-value {
+  flex: 1;
+  text-align: center;
+}
+
+.about-value-title {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dark);
+}
+
+.about-value-sep {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-light);
+}
+

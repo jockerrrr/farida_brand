@@ -1,0 +1,301 @@
+.prod-page {
+  background-color: var(--bg-cream);
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.prod-back {
+  display: block;
+  padding: 16px 20px 8px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.prod-back:hover {
+  color: var(--text-dark);
+}
+
+.prod-inner {
+  padding: 0 20px 20px;
+}
+
+/* ── Swiper gallery ─ */
+.prod-gallery {
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.prod-swiper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.prod-swiper-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Details ─ */
+.prod-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.prod-price {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* ── Loading / not found ─ */
+.prod-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ── Sold out badge ─ */
+.prod-soldout-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 5px 12px;
+  border-radius: 2px;
+}
+
+.prod-gallery {
+  position: relative;
+}
+
+.prod-swiper-img--soldout {
+  opacity: 0.5;
+  filter: grayscale(40%);
+}
+
+/* ── Size label ─ */
+.prod-size-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+/* ── Size buttons — XS/S and M/L ─ */
+.prod-sizes {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.prod-size-btn {
+  min-width: 60px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(26, 23, 20, 0.2);
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  color: var(--text-dark);
+}
+
+.prod-size-btn--active {
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  border-color: var(--text-dark);
+}
+
+.prod-size-btn--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* ── Quantity ─ */
+.prod-qty {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(26, 23, 20, 0.15);
+  border-radius: 3px;
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+.prod-qty-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.prod-qty-num {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  padding: 0 12px;
+  min-width: 32px;
+  text-align: center;
+  color: var(--text-dark);
+}
+
+/* ── Add to cart button ─ */
+.prod-add-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: opacity 0.2s;
+}
+
+.prod-add-btn:hover {
+  opacity: 0.85;
+}
+
+/* ── Add to cart soldout state ─ */
+.prod-add-btn--soldout {
+  background-color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ── Description ─ */
+.prod-desc {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+/* ── Size chart accordion ─ */
+.prod-accordion {
+  border-top: 1px solid var(--border-light);
+}
+
+.prod-accordion-toggle {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+
+/* chart tabs */
+.prod-chart-wrap {
+  padding: 12px 0;
+}
+
+.prod-chart-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.prod-chart-tab {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.prod-chart-tab--active {
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+}
+
+/* chart image */
+.prod-chart-img {
+  width: 100%;
+  border-radius: 3px;
+  display: block;
+  border: 1px solid var(--border-light);
+}
+
+/* ── Not found ─ */
+.prod-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 16px;
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+}
+
+.prod-not-found button {
+  padding: 10px 20px;
+  border: 1px solid var(--text-dark);
+  background: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+/* Swiper pagination dots */
+.swiper-pagination-bullet {
+  background: var(--text-muted) !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--text-dark) !important;
+}
