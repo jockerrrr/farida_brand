@@ -79,7 +79,7 @@
   color: #c0392b;
 }
 
-/* ── Product grid — 2 columns ─ */
+/* ── Product grid — 2 columns ── */
 .col-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -96,9 +96,8 @@
   flex-direction: column;
 }
 
-/* Badges */
-.col-card-soldout,
-.col-card-new {
+/* Sold out badge stays on image */
+.col-card-soldout {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -110,20 +109,8 @@
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 2px;
-}
-
-.col-card-soldout {
   background-color: var(--text-dark);
   color: var(--bg-cream);
-}
-
-.col-card-new {
-  background-color: transparent;
-  color: var(--text-dark);
-  border: 1px solid var(--text-dark);
-  top: auto;
-  bottom: 10px;
-  left: 10px;
 }
 
 /* Image */
@@ -178,4 +165,21 @@
   font-family: var(--font-sans);
   font-size: 0.7rem;
   color: var(--text-muted);
+}
+
+/* NEW badge in info section */
+.col-card-new {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background-color: transparent;
+  color: var(--text-dark);
+  border: 1px solid var(--text-dark);
+  align-self: flex-start;
+  margin-top: 4px;
 }

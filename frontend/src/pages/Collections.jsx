@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { getProducts } from '../services/api'
+import prodAPI from '../services/product'
 import './Collections.css'
 
 const Collections = () => {
@@ -11,17 +11,15 @@ const Collections = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-
   const [usingFallback, setUsingFallback] = useState(false)
 
   useEffect(() => {
     setUsingFallback(false)
-    getProducts()
+    prodAPI.getAllProducts()
       .then(res => {
         const all = res.data || []
         if (newOnly) {
           const fresh = all.filter(p => p.newCollection)
-          // If no products are marked newCollection yet, show all as a fallback
           if (fresh.length === 0) {
             setProducts(all)
             setUsingFallback(true)
@@ -70,26 +68,27 @@ const Collections = () => {
           <div
             key={product._id}
             className="col-card"
-            onClick={() => navigate(`/products/${product._id}`)}
+            onClick={() => navigate(`/product/${product._id}`)}
           >
-            {/* Sold out overlay */}
+            {/* Sold out badge stays on image */}
             {product.stock === 0 && <div className="col-card-soldout">SOLD OUT</div>}
 
-            {/* New badge */}
-            {product.newCollection && <div className="col-card-new">NEW</div>}
-
-            {/* Image */}
             <div className="col-card-img-wrap">
               {product.images?.[0]
-                ? <img src={product.images[0]} alt={product.Product_name} className={`col-card-img ${product.stock === 0 ? 'col-card-img--soldout' : ''}`} />
+                ? <img
+                    src={product.images[0]}
+                    alt={product.Product_name}
+                    className={`col-card-img ${product.stock === 0 ? 'col-card-img--soldout' : ''}`}
+                  />
                 : <div className="col-card-img-placeholder" />
               }
             </div>
 
-            {/* Info */}
+            {/* Info — name, price, then NEW badge below */}
             <div className="col-card-info">
               <span className="col-card-name">{product.Product_name}</span>
               <span className="col-card-price">LE {product.Price}.00</span>
+              {product.newCollection && <div className="col-card-new">NEW</div>}
             </div>
           </div>
         ))}
@@ -99,4 +98,3 @@ const Collections = () => {
 }
 
 export default Collections
-
