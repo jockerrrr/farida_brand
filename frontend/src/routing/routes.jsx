@@ -7,6 +7,8 @@ import OrderSuccess from '../pages/OrderSuccess'
 import Collections from '../pages/Collections'
 import AboutUs from '../pages/AboutUs'
 import Returns from '../pages/Returns'
+import NewArrivals from '../pages/NewCollection'
+
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,7 @@ const router = createBrowserRouter([
       { path: 'checkout', element: <Checkout /> },
       { path: 'order-success', element: <OrderSuccess /> },
       { path: 'collections', element: <Collections /> },
+      {path:"new-arrivals",element:<NewArrivals/>},
       { path: 'about', element: <AboutUs /> },
       { path: 'returns', element: <Returns /> },
     ],

@@ -3,15 +3,6 @@ import './Footer.css'
 export default function Footer() {
   return (
     <footer className="footer">
-      {/* Nav links row */}
-      <nav className="footer-nav">
-        <a href="#" className="footer-link">Collection</a>
-        <span className="footer-sep">·</span>
-        <a href="#" className="footer-link">Contact</a>
-        <span className="footer-sep">·</span>
-        <a href="#" className="footer-link">Policies</a>
-      </nav>
-
       {/* Social */}
       <div className="footer-social">
         <a
