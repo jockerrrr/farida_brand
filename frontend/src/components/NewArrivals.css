@@ -35,12 +35,10 @@
   opacity: 0.6;
 }
 
-/* ── Product list — two side-by-side cards ─────────── */
+/* ── Product list ─────────────────────────── */
 .na-list {
   display: flex;
-  flex-direction: row;
-  gap: 1px;
-  background-color: var(--border-light);
+  flex-wrap: wrap;
   border-top: 1px solid var(--border-light);
 }
 
@@ -49,9 +47,15 @@
   background-color: var(--bg-cream);
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: 0;
+  width: 50%;
   cursor: pointer;
+  box-sizing: border-box;
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.pc:nth-child(even) {
+  border-right: none;
 }
 
 /* ── Clickable image strip ─────────────────────────── */
@@ -61,15 +65,12 @@
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  /* Firefox */
   cursor: pointer;
-  /* stop click from propagating scroll drags */
   user-select: none;
 }
 
 .pc-scroll-strip::-webkit-scrollbar {
   display: none;
-  /* Chrome / Safari */
 }
 
 .pc-strip-img {
@@ -80,7 +81,6 @@
   object-fit: cover;
   display: block;
   pointer-events: none;
-  /* let parent handle clicks */
   transition: opacity 0.2s;
 }
 

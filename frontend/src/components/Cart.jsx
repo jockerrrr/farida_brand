@@ -11,7 +11,7 @@ const Cart = ({ cartitem, onDecrease, onIncrease, closeSidebar }) => {
     return sum + price * Number(item.quantity)
   }, 0)
 
-  const total = (subtotal + SHIPPING).toFixed(2)
+  const total = (subtotal).toFixed(2)
 
   const handleCheckout = () => {
     closeSidebar()
@@ -60,10 +60,6 @@ const Cart = ({ cartitem, onDecrease, onIncrease, closeSidebar }) => {
         <div className="cart-fee-row">
           <span className="cart-fee-label">Subtotal</span>
           <span className="cart-fee-value">LE {subtotal.toFixed(2)}</span>
-        </div>
-        <div className="cart-fee-row">
-          <span className="cart-fee-label">Shipping (COD)</span>
-          <span className="cart-fee-value">LE {SHIPPING}.00</span>
         </div>
         <div className="cart-total-row">
           <span className="cart-total-label">Total</span>

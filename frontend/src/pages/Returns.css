@@ -113,6 +113,7 @@
   gap: 10px;
 }
 
+/* old row style kept for safety */
 .returns-item-row {
   display: flex;
   align-items: flex-start;
@@ -128,7 +129,130 @@
 
 .returns-item-row input { accent-color: var(--text-dark); margin-top: 2px; }
 
-/* Success state */
+/* ── Item card ── */
+.returns-item-card {
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 4px;
+  background-color: var(--bg-cream);
+  transition: border-color 0.2s;
+}
+
+.returns-item-card--selected {
+  border-color: var(--text-dark);
+}
+
+.returns-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.returns-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--text-dark);
+  flex-shrink: 0;
+}
+
+.returns-item-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.returns-item-original {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Field label inside card ── */
+.returns-field-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.returns-field-note {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ── Size buttons ── */
+.returns-sizes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.returns-size-btn {
+  min-width: 56px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(26, 23, 20, 0.2);
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.returns-size-btn--active {
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  border-color: var(--text-dark);
+}
+
+/* ── Quantity ── */
+.returns-qty {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(26, 23, 20, 0.15);
+  border-radius: 3px;
+  width: fit-content;
+  margin-bottom: 4px;
+}
+
+.returns-qty-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.returns-qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.returns-qty-num {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  padding: 0 10px;
+  min-width: 52px;
+  text-align: center;
+  color: var(--text-dark);
+}
+
+/* ── Success state ── */
 .returns-success {
   display: flex;
   flex-direction: column;
@@ -171,4 +295,3 @@
   border: none;
   cursor: pointer;
 }
-

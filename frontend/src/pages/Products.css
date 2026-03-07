@@ -299,3 +299,59 @@
 .swiper-pagination-bullet-active {
   background: var(--text-dark) !important;
 }
+
+
+/* ── Size chart table ─ */
+.prod-chart-block {
+  margin-bottom: 24px;
+}
+
+.prod-chart-block:last-child {
+  margin-bottom: 0;
+}
+
+.prod-chart-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.prod-chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+}
+
+.prod-chart-th {
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  padding: 8px 10px;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.prod-chart-td {
+  padding: 8px 10px;
+  text-align: center;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.prod-chart-td--size {
+  font-weight: 600;
+  color: var(--text-dark);
+  letter-spacing: 0.08em;
+}
+
+tr:last-child .prod-chart-td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}

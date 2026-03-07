@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import './Drawer.css'
 
 const navLinks = [
-  { label: 'New Arrivals', path: '/collections?new=true' },
+  { label: 'New Arrivals', path: '/new-arrivals' },
   { label: 'Collections', path: '/collections' },
   { label: 'About Us', path: '/about' },
   { label: 'Returns & Exchanges', path: '/returns' },

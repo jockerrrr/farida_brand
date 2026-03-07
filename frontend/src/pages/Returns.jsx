@@ -1,49 +1,85 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { verifyOrder, returnOrder } from '../services/api'
+import orderAPI from '../services/order'
 import './Returns.css'
 
 const Returns = () => {
   const navigate = useNavigate()
-  const [step, setStep]           = useState(1)   // 1=lookup, 2=select items
-  const [orderNum, setOrderNum]   = useState('')
-  const [phone, setPhone]         = useState('')
-  const [order, setOrder]         = useState(null)
-  const [selectedItems, setSelectedItems] = useState([])
-  const [error, setError]         = useState('')
-  const [loading, setLoading]     = useState(false)
-  const [success, setSuccess]     = useState(false)
+  const [step, setStep] = useState(1)
+  const [orderNum, setOrderNum] = useState('')
+  const [phone, setPhone] = useState('')
+  const [order, setOrder] = useState(null)
+  const [returnItems, setReturnItems] = useState([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
-  const handleVerify = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-    try {
-      const res = await verifyOrder(Number(orderNum))
-      setOrder(res.data)
-      setStep(2)
-    } catch (err) {
-      setError(err.response?.data?.message || 'Order not found or not eligible for return.')
-    } finally {
-      setLoading(false)
-    }
+const handleVerify = async (e) => {
+  e.preventDefault()
+  setError('')
+
+  // Egyptian phone validation
+  const egyptianPhone = /^01[0125][0-9]{8}$/
+  if (!egyptianPhone.test(phone)) {
+    setError('Please enter a valid Egyptian phone number (01...)')
+    return
   }
 
-  const toggleItem = (itemId) => {
-    setSelectedItems(prev =>
-      prev.find(i => i.item_id === itemId)
-        ? prev.filter(i => i.item_id !== itemId)
-        : [...prev, { item_id: itemId }]
-    )
+  setLoading(true)
+  try {
+    const res = await orderAPI.verifyOrder(Number(orderNum))
+    setOrder(res.data)
+    setReturnItems(res.data.items.map(item => ({
+      product: item.product._id || item.product,
+      original_size: item.size,
+      original_quantity: item.quantity,
+      new_quantity: item.quantity,
+      selected: false,
+    })))
+    setStep(2)
+  } catch (err) {
+    setError(err.response?.data?.message || 'Order not found or not eligible for return.')
+  } finally {
+    setLoading(false)
+  }
+}
+
+  const toggleItem = (index) => {
+    setReturnItems(prev => prev.map((item, i) =>
+      i === index
+        ? { ...item, selected: !item.selected, new_quantity: item.original_quantity }
+        : item
+    ))
+  }
+
+  const updateQuantity = (index, delta) => {
+    setReturnItems(prev => prev.map((item, i) => {
+      if (i !== index || !item.selected) return item
+      const next = item.new_quantity + delta
+      if (next < 0) return { ...item, new_quantity: 0 }
+      if (next > item.original_quantity) return item
+      return { ...item, new_quantity: next }
+    }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (selectedItems.length === 0) { setError('Please select at least one item.'); return }
+    const selected = returnItems.filter(i => i.selected)
+    if (selected.length === 0) { setError('Please select at least one item.'); return }
     setError('')
     setLoading(true)
     try {
-      await returnOrder({ order_number: Number(orderNum), phone_number: phone, items: selectedItems })
+      await orderAPI.returnPolicy(
+        Number(orderNum),
+        phone,
+        selected.map(item => ({
+          product: item.product,
+          original_size: item.original_size,
+          original_quantity: item.original_quantity,
+          new_size: item.original_size, // size unchanged
+          new_quantity: item.new_quantity,
+        }))
+      )
       setSuccess(true)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to submit return request.')
@@ -70,16 +106,27 @@ const Returns = () => {
         <h1 className="returns-title">Returns &amp; Exchanges</h1>
         <p className="returns-subtitle">Only delivered orders are eligible. We'll reach out to confirm.</p>
 
+        {/* Step 1 */}
         {step === 1 && (
           <form className="returns-form" onSubmit={handleVerify}>
             <label className="returns-label">Order Number</label>
-            <input className="returns-input" type="number" placeholder="e.g. 1234567"
-              value={orderNum} onChange={e => setOrderNum(e.target.value)} required />
-
+            <input
+              className="returns-input"
+              type="number"
+              placeholder="e.g. 1234567"
+              value={orderNum}
+              onChange={e => setOrderNum(e.target.value)}
+              required
+            />
             <label className="returns-label">Phone Number</label>
-            <input className="returns-input" type="tel" placeholder="01..."
-              value={phone} onChange={e => setPhone(e.target.value)} required />
-
+            <input
+              className="returns-input"
+              type="tel"
+              placeholder="01..."
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              required
+            />
             {error && <p className="returns-error">{error}</p>}
             <button className="returns-btn" type="submit" disabled={loading}>
               {loading ? 'Looking up…' : 'Find My Order'}
@@ -87,22 +134,64 @@ const Returns = () => {
           </form>
         )}
 
+        {/* Step 2 */}
         {step === 2 && order && (
           <form className="returns-form" onSubmit={handleSubmit}>
             <p className="returns-order-num">Order #{order.order_number}</p>
-            <label className="returns-label">Select items to return / exchange:</label>
+            <p className="returns-label">Select items to return:</p>
 
             <div className="returns-items">
-              {order.items?.map((item, i) => (
-                <label key={i} className="returns-item-row">
-                  <input
-                    type="checkbox"
-                    onChange={() => toggleItem(item._id)}
-                    checked={!!selectedItems.find(s => s.item_id === item._id)}
-                  />
-                  <span>{item.product?.Product_name || 'Item'} — Size {item.size} × {item.quantity}</span>
-                </label>
-              ))}
+              {order.items?.map((item, i) => {
+                const ri = returnItems[i]
+                if (!ri) return null
+                const productName = item.product?.Product_name || 'Item'
+
+                return (
+                  <div key={i} className={`returns-item-card ${ri.selected ? 'returns-item-card--selected' : ''}`}>
+
+                    {/* Checkbox + name */}
+                    <div className="returns-item-header">
+                      <input
+                        type="checkbox"
+                        className="returns-checkbox"
+                        checked={ri.selected}
+                        onChange={() => toggleItem(i)}
+                      />
+                      <span className="returns-item-name">{productName}</span>
+                    </div>
+
+                    {/* Original info */}
+                    <p className="returns-item-original">
+                      Size {ri.original_size} · Qty {ri.original_quantity}
+                    </p>
+
+                    {/* Quantity — only shown when selected */}
+                    {ri.selected && (
+                      <>
+                        <p className="returns-field-label">
+                          Return Quantity <span className="returns-field-note">(0 = full return)</span>
+                        </p>
+                        <div className="returns-qty">
+                          <button
+                            type="button"
+                            className="returns-qty-btn"
+                            onClick={() => updateQuantity(i, -1)}
+                          >−</button>
+                          <span className="returns-qty-num">
+                            {ri.new_quantity === 0 ? 'All' : ri.new_quantity}
+                          </span>
+                          <button
+                            type="button"
+                            className="returns-qty-btn"
+                            onClick={() => updateQuantity(i, 1)}
+                            disabled={ri.new_quantity >= ri.original_quantity}
+                          >+</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )
+              })}
             </div>
 
             {error && <p className="returns-error">{error}</p>}
@@ -117,4 +206,3 @@ const Returns = () => {
 }
 
 export default Returns
-

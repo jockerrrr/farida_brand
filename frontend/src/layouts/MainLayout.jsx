@@ -6,6 +6,7 @@ import Header from '../components/Header'
 import Drawer from '../components/Drawer'
 import Cart from '../components/Cart'
 import './MainLayout.css'
+import ScrollToTop from '../components/scrollTop'
 
 const MainLayout = () => {
   const [cartitem, setcartitem] = useState(() => {
@@ -59,6 +60,7 @@ const MainLayout = () => {
 
   return (
     <div className="ml-root">
+      <ScrollToTop /> 
       {/* Drawer overlay */}
       {drawerOpen && (
         <div className="ml-overlay" onClick={() => setDrawerOpen(false)} />
