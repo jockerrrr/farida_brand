@@ -11,7 +11,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [orderError, setOrderError] = useState("");
-  const [shippingPrice, setShippingPrice] = useState(0);
+  const [shippingPrice, setShippingPrice] = useState(100);
+  const [success, setSuccess] = useState(false);
 
   const {
     register,
@@ -19,27 +20,20 @@ const Checkout = () => {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
-  // fetch shipping price from settings
   useEffect(() => {
     shipping()
       .then((res) => {
         const settings = res.data;
-        const shippingSetting = settings.find(
-          (s) => s.key === "shipping_price",
-        );
-        console.log("hi");
-        if (shippingSetting) {
-          setShippingPrice(shippingSetting.value);
-        }
+        const shippingSetting = settings.find((s) => s.key === "shipping_price");
+        if (shippingSetting) setShippingPrice(shippingSetting.value);
       })
-      .catch(() => setShippingPrice(100)); // fallback
+      .catch(() => setShippingPrice(100));
   }, []);
 
   const onSubmit = async (data) => {
     setSubmitting(true);
     setOrderError("");
     try {
-      // 1. create or update customer record
       const userRes = await userAPI({
         Firstname: data.firstname,
         Lastname: data.lastname,
@@ -52,7 +46,6 @@ const Checkout = () => {
       });
       const customerId = userRes.data.user._id;
 
-      // 2. create order with cart items
       await orderAPI.createOrder({
         Customer: customerId,
         items: cartitem.map((item) => ({
@@ -62,7 +55,6 @@ const Checkout = () => {
         })),
       });
 
-      // 3. save info to localStorage if checked
       if (data.saveInfo) {
         localStorage.setItem(
           "user_info",
@@ -74,19 +66,17 @@ const Checkout = () => {
             apartment: data.apartment,
             city: data.city,
             phone: data.phone,
-          }),
+          })
         );
       }
 
       setcartitem([]);
-      navigate("/order-success");
+      setSuccess(true);
     } catch (err) {
       console.log("full error:", err);
       console.log("response data:", err.response?.data);
       console.log("status:", err.response?.status);
-      const msg =
-        err.response?.data?.message ||
-        "Something went wrong. Please try again.";
+      const msg = err.response?.data?.message || "Something went wrong. Please try again.";
       setOrderError(msg);
     } finally {
       setSubmitting(false);
@@ -94,15 +84,27 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (cartitem.length === 0) navigate("/");
-  }, [cartitem, navigate]);
+    if (cartitem.length === 0 && !success) navigate("/");
+  }, [cartitem, navigate, success]);
 
   const subtotal = cartitem.reduce(
-    (acc, item) =>
-      acc + Number(item.price.replace(/[^0-9.]/g, "")) * item.quantity,
-    0,
+    (acc, item) => acc + Number(item.price.replace(/[^0-9.]/g, "")) * item.quantity,
+    0
   );
   const total = (subtotal + shippingPrice).toFixed(2);
+
+  if (success) return (
+    <div className="checkout-page">
+      <div className="checkout-success">
+        <p className="checkout-success-icon">✓</p>
+        <h2 className="checkout-success-title">Order Placed!</h2>
+        <p className="checkout-success-msg">Thank you for your order. We will contact you shortly to confirm.</p>
+        <button className="checkout-success-btn" onClick={() => navigate("/")}>
+          Back to Shop
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="checkout-page">
@@ -113,7 +115,6 @@ const Checkout = () => {
       <div className="checkout-inner">
         <h1 className="checkout-title">Checkout</h1>
 
-        {/* Order summary */}
         <div className="checkout-summary">
           <h2 className="checkout-section-title">Order Summary</h2>
           {cartitem.map((item, i) => (
@@ -128,9 +129,7 @@ const Checkout = () => {
           ))}
           <div className="checkout-summary-row">
             <span className="checkout-summary-label">Shipping (COD)</span>
-            <span className="checkout-summary-price">
-              LE {shippingPrice}.00
-            </span>
+            <span className="checkout-summary-price">LE {shippingPrice}.00</span>
           </div>
           <div className="checkout-total-row">
             <span>Total</span>
@@ -138,7 +137,6 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="checkout-form">
           <h2 className="checkout-section-title">Delivery</h2>
 
@@ -152,9 +150,7 @@ const Checkout = () => {
               placeholder="First name"
               className={`checkout-input ${errors.firstname ? "checkout-input--err" : ""}`}
             />
-            {errors.firstname && (
-              <p className="checkout-error">{errors.firstname.message}</p>
-            )}
+            {errors.firstname && <p className="checkout-error">{errors.firstname.message}</p>}
           </div>
 
           <div className="checkout-field">
@@ -164,45 +160,33 @@ const Checkout = () => {
               placeholder="Last name"
               className={`checkout-input ${errors.lastname ? "checkout-input--err" : ""}`}
             />
-            {errors.lastname && (
-              <p className="checkout-error">{errors.lastname.message}</p>
-            )}
+            {errors.lastname && <p className="checkout-error">{errors.lastname.message}</p>}
           </div>
 
           <div className="checkout-field">
             <input
               {...register("email", {
                 required: "Email required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Enter a valid email",
-                },
+                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email" },
               })}
               type="email"
               placeholder="Email address"
               className={`checkout-input ${errors.email ? "checkout-input--err" : ""}`}
             />
-            {errors.email && (
-              <p className="checkout-error">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="checkout-error">{errors.email.message}</p>}
           </div>
 
           <div className="checkout-field">
             <input
               {...register("address", {
                 required: "Address required",
-                minLength: {
-                  value: 10,
-                  message: "Please provide a full address",
-                },
+                minLength: { value: 10, message: "Please provide a full address" },
               })}
               type="text"
               placeholder="Address"
               className={`checkout-input ${errors.address ? "checkout-input--err" : ""}`}
             />
-            {errors.address && (
-              <p className="checkout-error">{errors.address.message}</p>
-            )}
+            {errors.address && <p className="checkout-error">{errors.address.message}</p>}
           </div>
 
           <div className="checkout-field">
@@ -221,64 +205,39 @@ const Checkout = () => {
               placeholder="City"
               className={`checkout-input ${errors.city ? "checkout-input--err" : ""}`}
             />
-            {errors.city && (
-              <p className="checkout-error">{errors.city.message}</p>
-            )}
+            {errors.city && <p className="checkout-error">{errors.city.message}</p>}
           </div>
 
           <div className="checkout-field">
             <input
               {...register("phone", {
                 required: "Phone required",
-                pattern: {
-                  value: /^01[0125][0-9]{8}$/,
-                  message: "Enter a valid Egyptian number",
-                },
+                pattern: { value: /^01[0125][0-9]{8}$/, message: "Enter a valid Egyptian number" },
               })}
               type="tel"
               placeholder="Phone number (01...)"
               className={`checkout-input ${errors.phone ? "checkout-input--err" : ""}`}
             />
-            {errors.phone && (
-              <p className="checkout-error">{errors.phone.message}</p>
-            )}
+            {errors.phone && <p className="checkout-error">{errors.phone.message}</p>}
           </div>
 
           <label className="checkout-check-label">
-            <input
-              {...register("saveInfo")}
-              type="checkbox"
-              className="checkout-check"
-            />
+            <input {...register("saveInfo")} type="checkbox" className="checkout-check" />
             Save this information for next time
           </label>
 
-          <h2 className="checkout-section-title checkout-section-title--payment">
-            Payment
-          </h2>
+          <h2 className="checkout-section-title checkout-section-title--payment">Payment</h2>
           <div className="checkout-payment-box">
             <span className="checkout-payment-dot" />
             <div className="checkout-payment-text">
-              <span className="checkout-payment-name">
-                Cash on Delivery (COD)
-              </span>
-              <span className="checkout-payment-note">
-                +LE {shippingPrice} shipping fee
-              </span>
+              <span className="checkout-payment-name">Cash on Delivery (COD)</span>
+              <span className="checkout-payment-note">+LE {shippingPrice} shipping fee</span>
             </div>
           </div>
 
-          {orderError && (
-            <p className="checkout-error checkout-error--global">
-              {orderError}
-            </p>
-          )}
+          {orderError && <p className="checkout-error checkout-error--global">{orderError}</p>}
 
-          <button
-            type="submit"
-            className="checkout-submit"
-            disabled={submitting}
-          >
+          <button type="submit" className="checkout-submit" disabled={submitting}>
             {submitting ? "Placing Order…" : "Complete Order"}
           </button>
         </form>
