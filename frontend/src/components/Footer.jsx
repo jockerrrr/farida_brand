@@ -6,7 +6,7 @@ export default function Footer() {
       {/* Social */}
       <div className="footer-social">
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/shopxtheduo/"
           className="footer-social-link"
           aria-label="Instagram"
           target="_blank"
