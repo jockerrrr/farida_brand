@@ -103,9 +103,7 @@ const Products = () => {
         {/* Details */}
         <div className="prod-details">
           <h1 className="prod-name">{name}</h1>
-          {product.description && (
-            <p className="prod-desc">{product.description}</p>
-          )}
+          
           <p className="prod-price">LE {price}.00</p>
 
           {/* Size selector */}

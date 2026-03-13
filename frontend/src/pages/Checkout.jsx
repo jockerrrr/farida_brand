@@ -128,7 +128,7 @@ const Checkout = () => {
             </div>
           ))}
           <div className="checkout-summary-row">
-            <span className="checkout-summary-label">Shipping (COD)</span>
+            <span className="checkout-summary-label">Shipping (May vary)</span>
             <span className="checkout-summary-price">LE {shippingPrice}.00</span>
           </div>
           <div className="checkout-total-row">
