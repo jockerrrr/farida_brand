@@ -10,7 +10,7 @@ import "./Products.css";
 
 const Products = () => {
   const { onAdd } = useOutletContext();
-  const { id } = useParams(); // changed from setName to id
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
@@ -26,9 +26,8 @@ const Products = () => {
       try {
         const res = await prodAPI.getProductById(id);
         setProduct(res.data);
-        setSelectedSize(res.data.sizes_available?.[0] || "");
+        setSelectedSize(res.data.sizes_available?.[0]?.size || "");
 
-        // fetch size charts if product has them
         if (res.data.size_chart?.length > 0) {
           const chartPromises = res.data.size_chart.map((chartId) =>
             sizeChartAPI.get_chart(chartId),
@@ -55,11 +54,18 @@ const Products = () => {
       </div>
     );
 
-  const soldOut = product.stock === 0;
   const sizes = product.sizes_available?.length ? product.sizes_available : [];
   const images = product.images?.length ? product.images : [];
   const price = product.Price;
   const name = product.Product_name;
+
+  const selectedSizeObj = sizes.find(s => s.size === selectedSize);
+  const soldOut = !selectedSizeObj || selectedSizeObj.stock === 0;
+
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+    setCount(1);
+  };
 
   const handleAddToCart = () => {
     if (soldOut) return;
@@ -103,7 +109,6 @@ const Products = () => {
         {/* Details */}
         <div className="prod-details">
           <h1 className="prod-name">{name}</h1>
-          
           <p className="prod-price">LE {price}.00</p>
 
           {/* Size selector */}
@@ -111,15 +116,21 @@ const Products = () => {
           <div className="prod-sizes">
             {sizes.map((s) => (
               <button
-                key={s}
-                disabled={soldOut}
-                className={`prod-size-btn ${selectedSize === s ? "prod-size-btn--active" : ""} ${soldOut ? "prod-size-btn--disabled" : ""}`}
-                onClick={() => !soldOut && setSelectedSize(s)}
+                key={s.size}
+                className={`prod-size-btn 
+                  ${selectedSize === s.size ? "prod-size-btn--active" : ""} 
+                  ${s.stock === 0 ? "prod-size-btn--soldout" : ""}`}
+                onClick={() => handleSizeChange(s.size)}
               >
-                {s}
+                {s.size}
               </button>
             ))}
           </div>
+
+          {/* Sold out message */}
+          {soldOut && (
+            <p className="prod-size-soldout-msg">This size is sold out</p>
+          )}
 
           {/* Quantity */}
           {!soldOut && (
@@ -133,7 +144,7 @@ const Products = () => {
               <span className="prod-qty-num">{count}</span>
               <button
                 className="prod-qty-btn"
-                onClick={() => setCount((c) => c + 1)}
+                onClick={() => setCount((c) => Math.min(selectedSizeObj?.stock ?? 1, c + 1))}
               >
                 +
               </button>

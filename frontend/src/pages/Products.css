@@ -73,6 +73,28 @@
   letter-spacing: 0.1em;
 }
 
+.prod-size-btn--soldout {
+  opacity: 0.35;
+  text-decoration: line-through;
+  cursor: pointer; /* still clickable */
+}
+
+.prod-size-btn--active.prod-size-btn--soldout {
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  border-color: var(--text-dark);
+  opacity: 0.35;
+}
+
+/* ADD this new rule for the sold out message */
+.prod-size-soldout-msg {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #c0392b;
+  margin-bottom: 20px;
+}
+
 /* ── Sold out badge ─ */
 .prod-soldout-badge {
   position: absolute;
@@ -136,11 +158,7 @@
   border-color: var(--text-dark);
 }
 
-.prod-size-btn--disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  text-decoration: line-through;
-}
+
 
 /* ── Quantity ─ */
 .prod-qty {
