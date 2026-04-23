@@ -60,7 +60,7 @@ const Products = () => {
   const name = product.Product_name;
 
   const selectedSizeObj = sizes.find(s => s.size === selectedSize);
-  const soldOut = !selectedSizeObj || selectedSizeObj.stock === 0;
+  const isPreorder = !selectedSizeObj || selectedSizeObj.stock === 0;
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -68,7 +68,6 @@ const Products = () => {
   };
 
   const handleAddToCart = () => {
-    if (soldOut) return;
     onAdd({
       id: product._id,
       displayName: name,
@@ -88,7 +87,7 @@ const Products = () => {
       <div className="prod-inner">
         {/* Image gallery */}
         <div className="prod-gallery">
-          {soldOut && <div className="prod-soldout-badge">SOLD OUT</div>}
+          {isPreorder && <div className="prod-soldout-badge">PRE-ORDER</div>}
           <Swiper
             modules={[Pagination]}
             pagination={{ clickable: true }}
@@ -99,7 +98,7 @@ const Products = () => {
                 <img
                   src={img}
                   alt={`${name} view ${i + 1}`}
-                  className={`prod-swiper-img ${soldOut ? "prod-swiper-img--soldout" : ""}`}
+                  className="prod-swiper-img"
                 />
               </SwiperSlide>
             ))}
@@ -127,37 +126,36 @@ const Products = () => {
             ))}
           </div>
 
-          {/* Sold out message */}
-          {soldOut && (
-            <p className="prod-size-soldout-msg">This size is sold out</p>
+          {/* Pre-order message */}
+          {isPreorder && (
+            <p className="prod-size-soldout-msg">
+              Sold out – Don't miss the restock. Pre-order now to claim yours. Ships immediately when available.
+            </p>
           )}
 
-          {/* Quantity */}
-          {!soldOut && (
-            <div className="prod-qty">
-              <button
-                className="prod-qty-btn"
-                onClick={() => setCount((c) => Math.max(1, c - 1))}
-              >
-                −
-              </button>
-              <span className="prod-qty-num">{count}</span>
-              <button
-                className="prod-qty-btn"
-                onClick={() => setCount((c) => Math.min(selectedSizeObj?.stock ?? 1, c + 1))}
-              >
-                +
-              </button>
-            </div>
-          )}
+          {/* Quantity — always shown */}
+          <div className="prod-qty">
+            <button
+              className="prod-qty-btn"
+              onClick={() => setCount((c) => Math.max(1, c - 1))}
+            >
+              −
+            </button>
+            <span className="prod-qty-num">{count}</span>
+            <button
+              className="prod-qty-btn"
+              onClick={() => setCount((c) => c + 1)}
+            >
+              +
+            </button>
+          </div>
 
-          {/* Add to cart */}
+          {/* Add to cart / Pre-order button */}
           <button
-            className={`prod-add-btn ${soldOut ? "prod-add-btn--soldout" : ""}`}
+            className={`prod-add-btn ${isPreorder ? "prod-add-btn--preorder" : ""}`}
             onClick={handleAddToCart}
-            disabled={soldOut}
           >
-            {soldOut ? "SOLD OUT" : "ADD TO CART"}
+            {isPreorder ? "PRE-ORDER" : "ADD TO CART"}
           </button>
 
           {/* Size chart accordion */}

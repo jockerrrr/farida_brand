@@ -74,8 +74,6 @@
 }
 
 .prod-size-btn--soldout {
-  opacity: 0.35;
-  text-decoration: line-through;
   cursor: pointer; /* still clickable */
 }
 
@@ -83,7 +81,6 @@
   background-color: var(--text-dark);
   color: var(--bg-cream);
   border-color: var(--text-dark);
-  opacity: 0.35;
 }
 
 /* ADD this new rule for the sold out message */
