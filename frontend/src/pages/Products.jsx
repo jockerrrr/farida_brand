@@ -60,7 +60,7 @@ const Products = () => {
   const name = product.Product_name;
 
   const selectedSizeObj = sizes.find(s => s.size === selectedSize);
-  const isPreorder = !selectedSizeObj || selectedSizeObj.stock === 0;
+  const isPreorder = !selectedSizeObj || selectedSizeObj.stock <= 0;
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
