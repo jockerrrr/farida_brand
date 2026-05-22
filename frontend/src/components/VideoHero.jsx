@@ -1,6 +1,16 @@
 import './VideoHero.css'
+import { useEffect, useRef } from 'react'
 
 export default function VideoHero() {
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      video.muted = true
+      video.play().catch(() => {})
+    }
+  }, [])
   return (
     <div className="video-hero">
       <video
