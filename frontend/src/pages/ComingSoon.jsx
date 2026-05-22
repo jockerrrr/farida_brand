@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './ComingSoon.css';
 
-const CLOUDINARY_VIDEO_URL = 'https://res.cloudinary.com/dmkci0uiw/video/upload/v1779411856/IMG_0838_g8kzs9.mp4';
+const CLOUDINARY_VIDEO_URL = 'https://res.cloudinary.com/dmkci0uiw/video/upload/v1779415503/IMG_0838_t4ngml.mov';
 
 export default function ComingSoon() {
   const videoRef = useRef(null);
@@ -10,6 +10,7 @@ export default function ComingSoon() {
     const video = videoRef.current;
     if (video) {
       video.muted = true;
+      video.volume = 0;
       video.play().catch(() => {});
     }
   }, []);
