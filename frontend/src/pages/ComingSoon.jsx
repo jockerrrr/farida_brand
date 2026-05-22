@@ -1,12 +1,23 @@
-import  './ComingSoon.css';
+import { useEffect, useRef } from 'react';
+import './ComingSoon.css';
 
-const CLOUDINARY_VIDEO_URL = 'https://res.cloudinary.com/dmkci0uiw/video/upload/v1779411856/IMG_0838_g8kzs9.mov';
+const CLOUDINARY_VIDEO_URL = 'https://res.cloudinary.com/dmkci0uiw/video/upload/v1779411856/IMG_0838_g8kzs9.mp4';
 
 export default function ComingSoon() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
+  }, []);
+
   return (
     <div className="coming-soon-wrapper">
-      {/* Background Video */}
       <video
+        ref={videoRef}
         className="coming-soon-video"
         src={CLOUDINARY_VIDEO_URL}
         autoPlay
@@ -15,10 +26,8 @@ export default function ComingSoon() {
         playsInline
       />
 
-      {/* Dark Overlay */}
       <div className="coming-soon-overlay" />
 
-      {/* Content */}
       <div className="coming-soon-content">
         <p className="coming-soon-eyebrow">New Collection</p>
 
