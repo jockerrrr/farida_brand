@@ -104,7 +104,7 @@ const handleVerify = async (e) => {
       <button className="returns-back" onClick={() => navigate(-1)}>← Back</button>
       <div className="returns-inner">
         <h1 className="returns-title">Returns &amp; Exchanges</h1>
-        <p className="returns-subtitle">Only delivered orders are eligible. We'll reach out to confirm.</p>
+        <p className="returns-subtitle">Note: Returns are only available while the courier is still present. Once the order has been received and the courier leaves, returns or exchanges won’t be accepted.</p>
 
         {/* Step 1 */}
         {step === 1 && (
@@ -138,7 +138,7 @@ const handleVerify = async (e) => {
         {step === 2 && order && (
           <form className="returns-form" onSubmit={handleSubmit}>
             <p className="returns-order-num">Order #{order.order_number}</p>
-            <p className="returns-label">Select items to return:</p>
+            <p className="returns-label">Adjust Your Order:</p>
 
             <div className="returns-items">
               {order.items?.map((item, i) => {
