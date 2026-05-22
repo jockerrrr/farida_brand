@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './ComingSoon.css';
 
-const CLOUDINARY_VIDEO_URL = 'https://res.cloudinary.com/dmkci0uiw/video/upload/v1779415503/IMG_0838_t4ngml.mov';
-
+const CLOUDINARY_VIDEO_URL = 'https://res.cloudinary.com/dmkci0uiw/video/upload/vc_h264,ac_none,f_mp4,q_auto:low,w_1080/v1779411856/IMG_0838_g8kzs9.mp4';
 export default function ComingSoon() {
   const videoRef = useRef(null);
 
