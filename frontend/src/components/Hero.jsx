@@ -10,7 +10,7 @@ export default function Hero() {
       {/* Title with decorative lines */}
       <h1 className="hero-title">
         <span className="hero-line" />
-        Soft duo collection
+        Duo: Effortless Ease
         <span className="hero-line" />
       </h1>
 

@@ -35,13 +35,14 @@
 
 .prod-swiper {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
 }
 
 .prod-swiper-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: var(--bg-cream);
   display: block;
 }
 

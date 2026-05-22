@@ -59,8 +59,8 @@ const Products = () => {
   const price = product.Price;
   const name = product.Product_name;
 
-  const selectedSizeObj = sizes.find(s => s.size === selectedSize);
-  const isPreorder = !selectedSizeObj || selectedSizeObj.stock <= 0;
+  const selectedSizeObj = sizes.find((s) => s.size === selectedSize);
+  const isSoldOut = !selectedSizeObj || selectedSizeObj.stock <= 0;
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -68,6 +68,7 @@ const Products = () => {
   };
 
   const handleAddToCart = () => {
+    if (isSoldOut) return;
     onAdd({
       id: product._id,
       displayName: name,
@@ -87,7 +88,7 @@ const Products = () => {
       <div className="prod-inner">
         {/* Image gallery */}
         <div className="prod-gallery">
-          {isPreorder && <div className="prod-soldout-badge">PRE-ORDER</div>}
+          {isSoldOut && <div className="prod-soldout-badge">SOLD OUT</div>}
           <Swiper
             modules={[Pagination]}
             pagination={{ clickable: true }}
@@ -126,36 +127,39 @@ const Products = () => {
             ))}
           </div>
 
-          {/* Pre-order message */}
-          {isPreorder && (
+          {/* Sold out message */}
+          {isSoldOut && (
             <p className="prod-size-soldout-msg">
-              Sold out – Don't miss the restock. Pre-order now to claim yours. Ships immediately when available.
+              This size is currently sold out.
             </p>
           )}
 
-          {/* Quantity — always shown */}
-          <div className="prod-qty">
-            <button
-              className="prod-qty-btn"
-              onClick={() => setCount((c) => Math.max(1, c - 1))}
-            >
-              −
-            </button>
-            <span className="prod-qty-num">{count}</span>
-            <button
-              className="prod-qty-btn"
-              onClick={() => setCount((c) => c + 1)}
-            >
-              +
-            </button>
-          </div>
+          {/* Quantity — only shown when in stock */}
+          {!isSoldOut && (
+            <div className="prod-qty">
+              <button
+                className="prod-qty-btn"
+                onClick={() => setCount((c) => Math.max(1, c - 1))}
+              >
+                −
+              </button>
+              <span className="prod-qty-num">{count}</span>
+              <button
+                className="prod-qty-btn"
+                onClick={() => setCount((c) => c + 1)}
+              >
+                +
+              </button>
+            </div>
+          )}
 
-          {/* Add to cart / Pre-order button */}
+          {/* Add to cart / Sold out button */}
           <button
-            className={`prod-add-btn ${isPreorder ? "prod-add-btn--preorder" : ""}`}
+            className={`prod-add-btn ${isSoldOut ? "prod-add-btn--soldout" : ""}`}
             onClick={handleAddToCart}
+            disabled={isSoldOut}
           >
-            {isPreorder ? "PRE-ORDER" : "ADD TO CART"}
+            {isSoldOut ? "SOLD OUT" : "ADD TO CART"}
           </button>
 
           {/* Size chart accordion */}

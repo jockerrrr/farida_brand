@@ -9,8 +9,8 @@ import ComingSoon from './pages/ComingSoon.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <RouterProvider router={router}/> */}
-    <ComingSoon></ComingSoon>
+     <RouterProvider router={router}/> 
+    {/* <ComingSoon></ComingSoon> */}
   </React.StrictMode>,
 )
 

@@ -81,7 +81,7 @@ export default function NewArrivals() {
         <h2 className="na-title">NEW ARRIVALS</h2>
         <button
           className="na-view-all"
-          onClick={() => navigate("/collections")}
+          onClick={() => navigate("/new-arrivals")}
         >
           View All
         </button>
