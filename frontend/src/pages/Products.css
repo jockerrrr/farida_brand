@@ -28,6 +28,7 @@
 
 /* ── Swiper gallery ─ */
 .prod-gallery {
+  position: relative;
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -74,25 +75,6 @@
   letter-spacing: 0.1em;
 }
 
-.prod-size-btn--soldout {
-  cursor: pointer; /* still clickable */
-}
-
-.prod-size-btn--active.prod-size-btn--soldout {
-  background-color: var(--text-dark);
-  color: var(--bg-cream);
-  border-color: var(--text-dark);
-}
-
-/* ADD this new rule for the sold out message */
-.prod-size-soldout-msg {
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  color: #c0392b;
-  margin-bottom: 20px;
-}
-
 /* ── Sold out badge ─ */
 .prod-soldout-badge {
   position: absolute;
@@ -109,13 +91,20 @@
   border-radius: 2px;
 }
 
-.prod-gallery {
-  position: relative;
-}
-
-.prod-swiper-img--soldout {
-  opacity: 0.5;
-  filter: grayscale(40%);
+/* ── Pre-order badge ─ */
+.prod-preorder-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  background-color: #8b6f47;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 5px 12px;
+  border-radius: 2px;
 }
 
 /* ── Size label ─ */
@@ -128,7 +117,7 @@
   margin-bottom: 10px;
 }
 
-/* ── Size buttons — XS/S and M/L ─ */
+/* ── Size buttons ─ */
 .prod-sizes {
   display: flex;
   gap: 10px;
@@ -156,7 +145,32 @@
   border-color: var(--text-dark);
 }
 
+.prod-size-btn--soldout {
+  cursor: pointer;
+}
 
+.prod-size-btn--active.prod-size-btn--soldout {
+  background-color: var(--text-dark);
+  color: var(--bg-cream);
+  border-color: var(--text-dark);
+}
+
+/* ── Status messages ─ */
+.prod-size-soldout-msg {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #c0392b;
+  margin-bottom: 20px;
+}
+
+.prod-size-preorder-msg {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #8b6f47;
+  margin-bottom: 20px;
+}
 
 /* ── Quantity ─ */
 .prod-qty {
@@ -209,11 +223,19 @@
   opacity: 0.85;
 }
 
-/* ── Add to cart soldout state ─ */
 .prod-add-btn--soldout {
   background-color: var(--text-muted);
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
+}
+
+.prod-add-btn--soldout:hover {
+  opacity: 0.5;
+}
+
+.prod-add-btn--preorder {
+  background-color: #8b6f47;
+  cursor: pointer;
 }
 
 /* ── Description ─ */
@@ -278,7 +300,6 @@
   color: var(--bg-cream);
 }
 
-/* chart image */
 .prod-chart-img {
   width: 100%;
   border-radius: 3px;
@@ -315,7 +336,6 @@
 .swiper-pagination-bullet-active {
   background: var(--text-dark) !important;
 }
-
 
 /* ── Size chart table ─ */
 .prod-chart-block {

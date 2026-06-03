@@ -60,7 +60,9 @@ const Products = () => {
   const name = product.Product_name;
 
   const selectedSizeObj = sizes.find((s) => s.size === selectedSize);
-  const isSoldOut = !selectedSizeObj || selectedSizeObj.stock <= 0;
+  const isOutOfStock = !selectedSizeObj || selectedSizeObj.stock <= 0;
+  const isPreorder = isOutOfStock && product.preorder === true;
+  const isSoldOut = isOutOfStock && !isPreorder;
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -76,6 +78,7 @@ const Products = () => {
       size: selectedSize,
       images: images[0] || "",
       quantity: count,
+      isPreorder,
     });
   };
 
@@ -89,6 +92,7 @@ const Products = () => {
         {/* Image gallery */}
         <div className="prod-gallery">
           {isSoldOut && <div className="prod-soldout-badge">SOLD OUT</div>}
+          {isPreorder && <div className="prod-preorder-badge">PRE-ORDER</div>}
           <Swiper
             modules={[Pagination]}
             pagination={{ clickable: true }}
@@ -119,7 +123,7 @@ const Products = () => {
                 key={s.size}
                 className={`prod-size-btn 
                   ${selectedSize === s.size ? "prod-size-btn--active" : ""} 
-                  ${s.stock === 0 ? "prod-size-btn--soldout" : ""}`}
+                  ${s.stock <= 0 ? "prod-size-btn--soldout" : ""}`}
                 onClick={() => handleSizeChange(s.size)}
               >
                 {s.size}
@@ -127,14 +131,19 @@ const Products = () => {
             ))}
           </div>
 
-          {/* Sold out message */}
+          {/* Status message */}
           {isSoldOut && (
             <p className="prod-size-soldout-msg">
               This size is currently sold out.
             </p>
           )}
+          {isPreorder && (
+            <p className="prod-size-preorder-msg">
+              This size is available for pre-order. Your order will ship as soon as stock is ready.
+            </p>
+          )}
 
-          {/* Quantity — only shown when in stock */}
+          {/* Quantity — shown when in stock or preorder */}
           {!isSoldOut && (
             <div className="prod-qty">
               <button
@@ -153,13 +162,13 @@ const Products = () => {
             </div>
           )}
 
-          {/* Add to cart / Sold out button */}
+          {/* Add to cart / Pre-order / Sold out button */}
           <button
-            className={`prod-add-btn ${isSoldOut ? "prod-add-btn--soldout" : ""}`}
+            className={`prod-add-btn ${isSoldOut ? "prod-add-btn--soldout" : ""} ${isPreorder ? "prod-add-btn--preorder" : ""}`}
             onClick={handleAddToCart}
             disabled={isSoldOut}
           >
-            {isSoldOut ? "SOLD OUT" : "ADD TO CART"}
+            {isSoldOut ? "SOLD OUT" : isPreorder ? "PRE-ORDER" : "ADD TO CART"}
           </button>
 
           {/* Size chart accordion */}
